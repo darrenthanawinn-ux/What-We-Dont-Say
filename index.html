@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>What We Don't Say</title>
+<style>
+:root{--v:0;--ink:#e9e6f2;--dim:#9a96b0;--acc:#b79cff;--hot:#ff6b8a;--glass:rgba(12,10,22,.72)}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;background:#07060c;color:var(--ink);font-family:Georgia,'Times New Roman',serif}
+button{font:inherit;color:inherit;cursor:pointer}
+.bg{position:fixed;inset:0;opacity:0;transition:opacity 1.6s ease;z-index:0}
+.bg.on{opacity:1}
+.b-menu{background:radial-gradient(ellipse at 30% 20%,#2a1f4d 0,#120d24 55%,#07060c 100%)}
+.b-dusk{background:linear-gradient(180deg,#2b1a3f 0,#7a3a5c 45%,#e08a5a 82%,#2a1a24 100%)}
+.b-hall{background:linear-gradient(180deg,#1b2a3a 0,#41607a 50%,#aab9c4 100%)}
+.b-night{background:linear-gradient(180deg,#05060f 0,#0d1636 55%,#1a2548 100%)}
+.b-phone{background:radial-gradient(circle at 50% 60%,#0f3b44 0,#06161a 60%,#020608 100%)}
+.b-warm{background:linear-gradient(160deg,#3a2316 0,#7a4a24 55%,#c58a4a 100%)}
+.b-party{background:linear-gradient(135deg,#1a0630 0,#6a1650 50%,#e0407a 100%)}
+.b-memory{background:radial-gradient(circle at 50% 40%,#5a1a1a 0,#2a0c10 55%,#0a0305 100%)}
+.b-quarry{background:linear-gradient(180deg,#02070a 0,#0b2a2a 60%,#143f3a 100%)}
+.b-stage{background:radial-gradient(ellipse at 50% 15%,#6a5420 0,#2a2010 55%,#0b0905 100%)}
+.b-light{background:linear-gradient(180deg,#25456a 0,#8fb4d6 55%,#f3d9a8 100%)}
+.b-dark{background:linear-gradient(180deg,#000 0,#12121a 60%,#1c1c28 100%)}
+#fx{position:fixed;inset:0;z-index:1;pointer-events:none}
+#vig{position:fixed;inset:0;z-index:2;pointer-events:none;box-shadow:inset 0 0 calc(80px + 220px*var(--v)) rgba(0,0,0,calc(.35 + .6*var(--v)));background:radial-gradient(circle,transparent 55%,rgba(120,0,30,calc(.28*var(--v))) 100%)}
+#game,#menu{position:fixed;inset:0;z-index:3}
+#top{position:absolute;top:0;right:0;display:flex;gap:6px;padding:10px;z-index:4}
+.sm{background:var(--glass);border:1px solid rgba(255,255,255,.14);padding:6px 12px;border-radius:8px;font-size:13px;letter-spacing:.04em;transition:.2s}
+.sm:hover{border-color:var(--acc);color:var(--acc)}
+#stage{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;padding:0 16px 22px}
+#stage.jit #box{animation:jit .22s steps(2) infinite}
+@keyframes jit{0%{transform:translate(0,0)}50%{transform:translate(1px,-1px)}100%{transform:translate(-1px,1px)}}
+#box{width:min(860px,100%);max-height:58vh;overflow-y:auto;background:var(--glass);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:22px 28px;font-size:clamp(16px,2.1vw,20px);line-height:1.65;cursor:pointer;box-shadow:0 10px 40px rgba(0,0,0,.5)}
+#text p{margin-bottom:.7em;transition:opacity .6s}
+#text p.old{opacity:.5}
+#text p.mem{color:#ffb4c0;font-style:italic;text-shadow:2px 0 rgba(255,0,80,.5),-2px 0 rgba(0,200,255,.4);animation:gl 1.4s steps(3) infinite}
+@keyframes gl{0%,90%{transform:none}93%{transform:translateX(3px)}96%{transform:translateX(-2px)}}
+#text p.msg{font-family:Consolas,Menlo,monospace;font-size:.85em;color:#7fe3d0;border-left:3px solid #7fe3d0;padding-left:12px}
+#cont{height:18px;text-align:right;color:var(--acc);opacity:0;font-size:14px}
+#cont.on{opacity:1;animation:bl 1s infinite}
+@keyframes bl{50%{opacity:.2}}
+#choices{width:min(860px,100%);display:flex;flex-direction:column;gap:9px;margin-top:12px}
+.ch{background:linear-gradient(90deg,rgba(40,30,70,.85),rgba(20,16,40,.85));border:1px solid rgba(183,156,255,.35);padding:13px 18px;border-radius:10px;text-align:left;font-size:clamp(15px,1.9vw,18px);transition:.2s;animation:up .5s both}
+.ch:hover{transform:translateX(6px);border-color:var(--acc);background:linear-gradient(90deg,rgba(90,60,160,.85),rgba(30,22,60,.85))}
+.ch b{color:var(--acc);margin-right:10px}
+@keyframes up{from{opacity:0;transform:translateY(10px)}}
+#menu{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center}
+#menu h1{font-size:clamp(34px,7vw,72px);font-weight:400;letter-spacing:.12em;text-shadow:0 0 30px rgba(183,156,255,.5)}
+#menu h1 span{display:block;color:var(--hot);font-size:.45em;letter-spacing:.5em;margin-top:6px}
+#menu p.sub{color:var(--dim);font-style:italic;margin-bottom:22px}
+.mb{width:260px;background:var(--glass);border:1px solid rgba(255,255,255,.18);padding:13px;border-radius:10px;font-size:18px;letter-spacing:.1em;transition:.25s}
+.mb:hover{border-color:var(--acc);letter-spacing:.2em;color:var(--acc)}
+#found{color:var(--dim);font-size:13px;margin-top:14px}
+#panel{position:fixed;inset:0;z-index:10;background:rgba(3,2,8,.82);display:flex;align-items:center;justify-content:center;padding:16px}
+#panel[hidden],#game[hidden],#menu[hidden]{display:none}
+.card{width:min(520px,100%);max-height:90vh;overflow:auto;background:#12101f;border:1px solid rgba(183,156,255,.35);border-radius:14px;padding:26px}
+.card h2{font-weight:400;letter-spacing:.1em;margin-bottom:16px;color:var(--acc)}
+.card .row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:12px 0;font-size:15px}
+.card input[type=range]{width:55%}
+.card input[type=text]{width:100%;padding:10px;background:#07060c;border:1px solid var(--acc);color:var(--ink);border-radius:8px;font:inherit;margin:10px 0 16px}
+.slot{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:8px 0;padding:10px 12px;border:1px solid rgba(255,255,255,.14);border-radius:8px;background:rgba(255,255,255,.03);font-size:14px}
+.slot small{color:var(--dim);display:block}
+.card .btns{display:flex;gap:10px;justify-content:flex-end;margin-top:16px;flex-wrap:wrap}
+#banner{position:fixed;inset:0;z-index:9;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,.88);opacity:0;pointer-events:none;transition:opacity 1s;text-align:center}
+#banner.on{opacity:1;pointer-events:auto}
+#banner small{letter-spacing:.6em;color:var(--hot);font-size:15px}
+#banner h2{font-weight:400;font-size:clamp(28px,5vw,54px);letter-spacing:.12em;margin-top:10px}
+#toast{position:fixed;top:56px;left:50%;transform:translateX(-50%);z-index:8;background:var(--glass);border:1px solid var(--acc);padding:8px 18px;border-radius:20px;font-size:14px;font-style:italic;opacity:0;transition:opacity .5s;pointer-events:none}
+#toast.on{opacity:1}
+#endcard{width:min(860px,100%);background:var(--glass);border:1px solid var(--acc);border-radius:14px;padding:20px 26px;margin-top:12px;animation:up .8s both}
+#endcard h3{font-weight:400;letter-spacing:.1em;color:var(--acc);margin-bottom:10px}
+.bar{display:flex;align-items:center;gap:10px;font-size:13px;margin:5px 0;color:var(--dim)}
+.bar i{flex:0 0 130px;font-style:normal}
+.bar div{flex:1;height:7px;background:rgba(255,255,255,.1);border-radius:4px;overflow:hidden}
+.bar div u{display:block;height:100%;background:linear-gradient(90deg,#7b5cff,#ff6b8a)}
+</style>
+</head>
+<body>
+<div id="bgA" class="bg b-menu on"></div><div id="bgB" class="bg"></div>
+<canvas id="fx"></canvas><div id="vig"></div>
+
+<div id="menu">
+  <h1>WHAT WE DON'T SAY<span>FRESHMAN YEAR</span></h1>
+  <p class="sub">Some promises are made to keep a secret. Some are made to keep a person.</p>
+  <button class="mb" id="bNew">NEW GAME</button>
+  <button class="mb" id="bLoad">LOAD</button>
+  <button class="mb" id="bSet">SETTINGS</button>
+  <div id="found"></div>
+</div>
+
+<div id="game" hidden>
+  <div id="top">
+    <button class="sm" id="tSave">Save</button><button class="sm" id="tLoad">Load</button>
+    <button class="sm" id="tSet">Settings</button><button class="sm" id="tMenu">Menu</button>
+  </div>
+  <div id="stage">
+    <div id="box"><div id="text"></div><div id="cont">▾</div></div>
+    <div id="choices"></div>
+  </div>
+</div>
+
+<div id="panel" hidden></div>
+<div id="banner"></div>
+<div id="toast"></div>
+<script src="game.js"></script>
+</body>
+</html>
